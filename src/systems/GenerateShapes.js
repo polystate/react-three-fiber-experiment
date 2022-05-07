@@ -1,32 +1,69 @@
 import React from "react";
 import Octahedron from "../shapes/Octahedron";
+import CubeBox from "../shapes/CubeBox";
 
 const GenerateShapes = (props) => {
-  const { amount, shape } = props;
-
-  const shapeArr = new Array(amount).fill(shape);
-  console.log(shapeArr);
+  const { amount, shape, positionRange, geometryRange, groupRef } = props;
   const getRandomInt = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   };
-  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-  return (
-    <>
-      {shapeArr.map((elem, index) => {
+  const getComponent = (index) => {
+    switch (shape) {
+      case "Octahedron":
         return (
           <Octahedron
             key={index}
             position={[
-              getRandomInt(-5, 5),
-              getRandomInt(-5, 5),
-              getRandomInt(-5, 5),
+              getRandomInt(...positionRange),
+              getRandomInt(...positionRange),
+              getRandomInt(...positionRange),
             ]}
-            geometry={[getRandomInt(1, 2), 1]}
-            color={"#" + Math.floor(Math.random() * 16777215).toString(16)}
+            geometry={[
+              getRandomInt(...geometryRange),
+              getRandomInt(...geometryRange),
+            ]}
+            color={`rgb(${getRandomInt(0, 256)},${getRandomInt(
+              0,
+              256
+            )},${getRandomInt(0, 256)})`}
           />
         );
+      case "CubeBox":
+        return (
+          <CubeBox
+            key={index + "c"}
+            position={[
+              getRandomInt(...positionRange),
+              getRandomInt(...positionRange),
+              getRandomInt(...positionRange),
+            ]}
+            geometry={[
+              getRandomInt(...geometryRange),
+              getRandomInt(...geometryRange),
+              getRandomInt(...geometryRange),
+            ]}
+            color={`rgb(${getRandomInt(0, 256)},${getRandomInt(
+              0,
+              256
+            )},${getRandomInt(0, 256)})`}
+          />
+        );
+
+        break;
+      default:
+        console.log("Shape unknown");
+    }
+  };
+
+  const shapeArr = new Array(amount).fill("");
+
+  return (
+    <>
+      {shapeArr.map((Shape, index) => {
+        let ourShape = getComponent(index);
+        return ourShape;
       })}
     </>
   );
