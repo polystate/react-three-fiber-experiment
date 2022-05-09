@@ -1,14 +1,15 @@
-import React, { useRef, children } from "react";
-import { canvas, useFrame } from "@react-three/fiber";
+import React, { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 
-const Spin = () => {
-  const myMesh = useRef();
+const Spin = ({ children }) => {
+  const actionRef = useRef();
+
   useFrame(({ clock }) => {
-    myMesh.current.rotation.x = Math.sin(clock.getElapsedTime());
-    myMesh.current.rotation.y = Math.cos(clock.getElapsedTime());
-    myMesh.current.position.x = Math.sin(clock.getElapsedTime());
+    actionRef.current.rotation.x = Math.sin(clock.getElapsedTime());
+    actionRef.current.rotation.y = Math.cos(clock.getElapsedTime());
+    actionRef.current.position.x = Math.sin(clock.getElapsedTime());
   });
-  return <group ref={myMesh}>{children}</group>;
+  return <group ref={actionRef}>{children}</group>;
 };
 
 export default Spin;

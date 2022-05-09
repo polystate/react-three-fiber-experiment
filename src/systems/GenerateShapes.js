@@ -1,15 +1,18 @@
 import React from "react";
 import Octahedron from "../shapes/Octahedron";
 import CubeBox from "../shapes/CubeBox";
+import { useRef } from "react";
 
 const GenerateShapes = (props) => {
-  const { amount, shape, positionRange, geometryRange, groupRef } = props;
+  const { amount, shape, positionRange, geometryRange } = props;
+  const groupRef = useRef();
   const getRandomInt = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    return Math.floor(Math.random() * (max - min) + min);
   };
-  const getComponent = (index) => {
+
+  const getShape = (index) => {
     switch (shape) {
       case "Octahedron":
         return (
@@ -30,6 +33,7 @@ const GenerateShapes = (props) => {
             )},${getRandomInt(0, 256)})`}
           />
         );
+        break;
       case "CubeBox":
         return (
           <CubeBox
@@ -50,20 +54,16 @@ const GenerateShapes = (props) => {
             )},${getRandomInt(0, 256)})`}
           />
         );
-
         break;
       default:
         console.log("Shape unknown");
     }
   };
 
-  const shapeArr = new Array(amount).fill("");
-
   return (
     <>
-      {shapeArr.map((Shape, index) => {
-        let ourShape = getComponent(index);
-        return ourShape;
+      {new Array(amount).fill("").map((iterate, index) => {
+        return getShape(index);
       })}
     </>
   );

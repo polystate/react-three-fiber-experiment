@@ -1,39 +1,40 @@
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
-import { Physics, useBox, usePlane } from "@react-three/cannon";
+import { Canvas } from "@react-three/fiber";
 import "./App.css";
-import Octahedron from "./shapes/Octahedron";
 import Sun from "./shapes/Sun";
-import CubeBox from "./shapes/CubeBox";
 import Spin from "./actions/Spin";
 import GenerateShapes from "./systems/GenerateShapes";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import Camera from "./scene/Camera";
+import React, { useFrame } from "react";
 
 const App = () => {
   const lightSourcePosition = 200;
+
   return (
     <div id="canvas-container">
       <Canvas>
         <ambientLight intensity={0.1} />
         <directionalLight color="gold" position={[0, 0, lightSourcePosition]} />
-        <PerspectiveCamera
-          makeDefault
-          position={[0, 0, lightSourcePosition / 2]}
-        />
-        <OrbitControls />
+        <Camera lightSourcePosition={lightSourcePosition} />
         <Sun lightSourcePosition={lightSourcePosition} color={"orange"} />
-        <GenerateShapes
-          amount={100}
-          shape={"Octahedron"}
-          positionRange={[-15, 15]}
-          geometryRange={[1, 3]}
-        />
-
+        <Spin>
+          <GenerateShapes
+            amount={100}
+            shape={"Octahedron"}
+            positionRange={[-15, 15]}
+            geometryRange={[1, 3]}
+          />
+          <GenerateShapes
+            amount={50}
+            shape={"CubeBox"}
+            positionRange={[-40, -25]}
+            geometryRange={[1, 3]}
+          />
+        </Spin>
         <GenerateShapes
           amount={50}
-          shape={"CubeBox"}
-          positionRange={[-40, -25]}
-          geometryRange={[1, 3]}
+          shape={"Octahedron"}
+          positionRange={[25, 125]}
+          geometryRange={[2, 4]}
         />
       </Canvas>
     </div>
